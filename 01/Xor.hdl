@@ -14,4 +14,17 @@ CHIP Xor {
 
     PARTS:
     // Put your code here:
+    //Alt solution
+  //  Nand(a= a, b= b, out= i);
+  //  Nand(a= i, b= b, out= B);
+  //  Nand(a= a, b= i, out= A);
+  //  Nand(a= A, b= B, out= out);
+    //out is a "wire" to connect Not to And
+    Not(in= a, out= nota);
+    Not(in= b, out= notb);
+    //Out is a "wire" to connect And and Or
+    And(a= a, b= notb, out= aAndNotb);
+    And(a= nota, b= b, out= bAndNota);
+    Or(a= aAndNotb, b= bAndNota, out = out);
+
 }
