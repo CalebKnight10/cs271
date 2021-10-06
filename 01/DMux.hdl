@@ -9,7 +9,7 @@
  *          {0, in} if sel == 1
  */
 
-CHIP DMux {
+CHIP Dmux {
     IN in, sel;
     OUT a, b;
 
