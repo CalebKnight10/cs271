@@ -56,10 +56,13 @@ if (result < 0)
 // decides if the name comes after the professor
 else if (result > 0)
 {
+	// prints the name is after professor
 	printf("%s is after %s. \n", name, prof);
 }
+// decides if the name is the same as professor
 else if (result == 0)
 {
+	// prints the name is the professor
 	printf("%s is %s. \n", name, prof);
 }
 }
