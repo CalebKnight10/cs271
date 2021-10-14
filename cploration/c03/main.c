@@ -43,7 +43,10 @@ int main(int argc, const char *argv[]){
 	unsigned int line_num = 0; // stores curr line number
 	while (fgets(line, sizeof(line), fin)) {
 		line_num ++;
-		printf("[%04d] %s",line_num, line);
-		fprintf(fout, %s, line);
+		printf("[%04d] %s ",line_num, line);
+		fprintf(fout, "%s", line);
 	}
+
+	//----------------------------------//
+	fclose(fin); fclose(fout);
 }
