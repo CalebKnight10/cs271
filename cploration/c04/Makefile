@@ -5,7 +5,8 @@ OBJFILES = main.o parser.o
 TARGET = main
 
 all: $(TARGET)
-$(TARGET): (OBJFILES)
+
+$(TARGET): $(OBJFILES)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJFILES) $(LDFLAGS)
 
 clean:

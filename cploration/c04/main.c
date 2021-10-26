@@ -6,16 +6,16 @@ int main(int argc, const char *argv[]) {
 		printf("Usage: %s [filename]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	FILE *fin = fopen(argv[1], "r");
+	FILE *file = fopen(argv[1], "r");
 
-	if (fin == NULL) 
+	if (file == NULL) 
 	{
 		perror("Unable to open file!");
 		exit(EXIT_FAILURE);
 	} 
 
-	parse(fin);
+	parse(file);
 
-	fclose(fin); fclose(fout);
+	fclose(file);
 
 }
