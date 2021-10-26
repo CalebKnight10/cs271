@@ -16,9 +16,17 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
+    // work from the bottom up, the last Mux is the first if
     Inc16(in=ini, out=outi);
     Mux16(a=ini, b=outi, sel=inc, out=outinc);
     Mux16(a=outinc, b=in, sel=load, out=outload);
     Mux16(a=outload, b[0..15]=false, sel=reset, out=outreset);
     Register(in=outreset, load=true, out=out, out=ini);
+
+    // in Class implementation
+    Inc16(in=outFeedback, out=incResult);
+    Mux16(a=outFeedback, b=incResult, sel=inc, out=incOut);
+    Mux16(a=incOut, b=in, sel=load, out=incOrDataOut);
+    Mux16(a=incOrDataOut, b=false, sel=reset, out=incOrDataOrSelectOut);
+    Register(in=incOrDataOrSelectOut, load=true, out=out, out=outFeedback);
 }
