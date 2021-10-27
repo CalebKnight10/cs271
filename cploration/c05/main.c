@@ -15,7 +15,5 @@ int main(int argc, const char *argv[]) {
 	} 
 
 	parse(file);
-
 	fclose(file);
-
 }

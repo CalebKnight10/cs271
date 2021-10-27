@@ -12,10 +12,10 @@ void parse(FILE * file) {
 		if(is_Atype(line)) {
 			inst_type = 'A';
 		} 
-		else if (is_label(line)) {
+		else if(is_label(line)) {
 			inst_type = 'L';
 		}
-		else if (is_Ctype(line)) {
+		else {
 			inst_type = 'C';
 		}
 		printf("%c  %s\n", inst_type, line);
@@ -23,7 +23,7 @@ void parse(FILE * file) {
 }
 
 char *strip(char *s) {
-	char s_new[sizeof(s) + 1] = "";
+	char s_new[MAX_LINE_LENGTH] = "";
 	int i = 0;
 	for(char *s2 = s; *s2; s2++) { 
 		if(*s2 == '/' && *(s2+1) =='/') {
@@ -47,5 +47,5 @@ bool is_label(const char *line) {
 }
 
 bool is_Ctype(const char *line) {
-	return line[0] == !is_label(line) && !is_Atype(line);
+	return !is_label(line) && !is_Atype(line);
 }
