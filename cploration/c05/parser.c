@@ -7,12 +7,18 @@ void parse(FILE * file) {
 		strip(line);
 		if (!*line) {
 			continue;
-		}
-		char inst_type;
-		if(line == is_Atype) {
+		} 
+		char inst_type = '\0';
+		if(is_Atype(line)) {
 			inst_type = 'A';
+		} 
+		else if (is_label(line)) {
+			inst_type = 'L';
 		}
-		printf("%c  %s\n", line);
+		else if (is_Ctype(line)) {
+			inst_type = 'C';
+		}
+		printf("%c  %s\n", inst_type, line);
 	}
 }
 
@@ -28,15 +34,18 @@ char *strip(char *s) {
 		}
 	}
 	s_new[i] = '\0';
-    strcpy(s, s_new);
-    return s;
+	strcpy(s, s_new);
+	return s;
 }
 
-void is_Atype(const char *line[]) {
-	for(char *l2 = line; *l2; l2++) {
-		if(*l2 == '@') {
-			return true;
-		}
-		else false;
-	}
+bool is_Atype(const char *line) {
+	return line[0] == '@';
+}
+
+bool is_label(const char *line) {
+	return line[0] == '(' && line[sizeof(line) -1] == ')';
+}
+
+bool is_Ctype(const char *line) {
+	return line[0] == !is_label(line) && !is_Atype(line);
 }

@@ -8,6 +8,6 @@
 
 char *strip(char *s);
 void parse(FILE * file);
-void is_Atype(const char *argv[]);
-void is_label(const char *argv[]);
-void is_Ctype(const char *argv[]);
+bool is_Atype(const char *);
+bool is_label(const char *);
+bool is_Ctype(const char *);
