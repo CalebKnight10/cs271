@@ -23,7 +23,7 @@ void parse(FILE * file) {
 }
 
 char *strip(char *s) {
-	char s_new[MAX_LINE_LENGTH] = "";
+	char s_new[strlen(s)+1];
 	int i = 0;
 	for(char *s2 = s; *s2; s2++) { 
 		if(*s2 == '/' && *(s2+1) =='/') {
