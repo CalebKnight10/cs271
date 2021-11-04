@@ -10,6 +10,28 @@
 
 typedef int16_t hack_addr;
 typedef int16_t opcode;
+typedef struct C_instruction {
+	opcode a:1;
+	opcode comp:7;
+	opcode dest:3;
+	opcode jump:3;
+} c_instruction;
+
+typedef struct A_instruction {
+	union AddyOrLabel {
+		hack_addr addy;
+		char *label;
+	}
+	bool is_addr;
+} a_instruction;
+
+typedef struct Instruction {
+	union AorC {
+		a_instruction;
+		c_instruction;
+	}
+	instr_type type_stored;
+} instruction;
 
 char *strip(char *s);
 char *extract_label(const char *line, char* label);
