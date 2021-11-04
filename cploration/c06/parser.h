@@ -18,4 +18,4 @@ bool is_Atype(const char *);
 bool is_label(const char *);
 bool is_Ctype(const char *);
 
-enum instr_type {INV_INSTR = -1, A_INSTR, C_INSTR};
+enum instr_type {Inv_instr = -1, A-instr, C-instr};
