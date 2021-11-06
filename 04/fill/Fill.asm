@@ -11,6 +11,7 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
+
 //Caleb Knight
 
 (LOOP)
@@ -29,12 +30,12 @@
   D;JGT
 //Else, go to FILL_WHITE
   @FILL_WHITE
-  D;JMP
+  D;JEQ
 
 //Define FILL_BLACK
 (FILL_BLACK)
   //Indicate that black is being used and fill screen with -1
-  @R0
+  @R1
   M=-1
   //FILL Black
   @FILL
@@ -42,7 +43,7 @@
 //Define FILL_WHITE
 (FILL_WHITE)
   //Indicate that white is being used and fill screen with 0
-  @R0
+  @R1
   M=0
   //FILL White
   @FILL
@@ -51,7 +52,7 @@
 //Check FILL and decide what to do based off of D
 (FILL)
   //Checks R0(D) to see if it is gonna be Black or White
-  @R0
+  @R1
   D=M
 
   //Access the address of the start pixel
@@ -61,11 +62,13 @@
   M=D
 
   //Increment to the next memory address
+  //Subtract KBD from SCREEN address to ensure we don't go over our limit
   @R0
   D=M+1
-  M=D
+  @KBD
+  D=A-D
 
-  //
+  //Increment again
   @R0
   M=M+1
   A=M
@@ -75,6 +78,6 @@
   @FILL
   D;JGT
 
-//Infitely Loop This
+//Infinitely Loop This
   @LOOP
   0;JMP
