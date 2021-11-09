@@ -1,6 +1,7 @@
 #include <symtable.h>
 
-
+// Unsigned long extended size variable for storing numbers (32 bits or 4 bytes)
+// Won't store negatives... range [0-2^32-1]
 unsigned long
 hash(unsigned char *str)
 {
@@ -16,3 +17,23 @@ hash(unsigned char *str)
 		return hash %= SYMBOL_TABLE_SIZE;
 }
 
+void insert(hack_addr addr,char *name[]) {
+
+   struct Symbol *item = (struct Symbol*) malloc(sizeof(struct Symbol));
+   item->name = name;  
+   item->addr = addr;
+
+   //get the hash 
+   int hashIndex = hashCode(addr);
+
+   //move in array until an empty or deleted cell
+   while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->addr != NULL) {
+      //go to next cell
+      ++hashIndex;
+		
+      //wrap around the table
+      hashIndex %= SIZE;
+   }
+	
+   hashArray[hashIndex] = item;
+}
