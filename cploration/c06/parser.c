@@ -49,7 +49,7 @@ char *extract_label(const char *line, char* label) {
 			label[i++] = *label2;
 		}
 	}
-	//strncpy(label, line + 1, strlen(line) -2);
+	label[i] = '\0';
 	return label;
 }
 
