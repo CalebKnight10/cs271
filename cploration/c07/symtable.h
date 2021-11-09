@@ -8,13 +8,13 @@
 typedef int16_t hack_addr;
 
 struct Symbol {
-	char *name[] = {0};
+	char *name;
 	hack_addr addr;
-}
+} Symbol;
 struct Symbol* hashArray[SYMBOL_TABLE_SIZE]; 
 
 int hash(char *str);
-struct Symbol *find(char * key);
-void insert(char* key, hack_addr addr);
+struct Symbol *find(char * name);
+void insert(char* name, hack_addr addr);
 void display_table();
 

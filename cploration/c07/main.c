@@ -1,3 +1,4 @@
+#include "symtable.h"
 int main()
 {        
     // Create empty item

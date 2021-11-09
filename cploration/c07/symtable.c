@@ -1,4 +1,5 @@
-#include <symtable.h>
+#include "symtable.h"
+
 
 // Unsigned long extended size variable for storing numbers (32 bits or 4 bytes)
 // Won't store negatives... range [0-2^32-1]
