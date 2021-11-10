@@ -4,7 +4,7 @@ int main()
     // Create empty item
   struct Symbol* item = (struct Symbol*) malloc(sizeof(struct Symbol));
   item->name = NULL;  
-  item->address = -1; 
+  item->addr = -1; 
 
     // Labels from Max.asm
   insert("OUTPUT_FIRST", 11);
@@ -26,7 +26,7 @@ int main()
   item = find(label);
 
   if(item != NULL) {
-    printf("Element %s found: %d\n", item->name, item->address);
+    printf("Element %s found: %d\n", item->name, item->addr);
   } else {
     printf("Element %s not found\n", label);
   }
@@ -38,7 +38,7 @@ int main()
   item = find(label);
 
   if(item != NULL) {
-    printf("Element %s found: %d\n", item->name, item->address);
+    printf("Element %s found: %d\n", item->name, item->addr);
   } else {
     printf("Element %s not found\n", label);
   }

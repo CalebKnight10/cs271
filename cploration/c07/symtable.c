@@ -1,13 +1,12 @@
 #include "symtable.h"
 
-
 // Unsigned long extended size variable for storing numbers (32 bits or 4 bytes)
 // Won't store negatives... range [0-2^32-1]
 unsigned long hash(unsigned char *str) {
 	unsigned long hash = 5381;
-	int c;
+	int c = 0;
 
-	while (c = *str++)
+	while (c == *str++)
             hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
 		// This allows us to wrap around the hash table
@@ -16,30 +15,30 @@ unsigned long hash(unsigned char *str) {
 		return hash %= SYMBOL_TABLE_SIZE;
 }
 
-void insert(hack_addr addr,char *name[]) {
+void insert(char *name, hack_addr addr) {
 
 	struct Symbol *item = (struct Symbol*) malloc(sizeof(struct Symbol));
 	item->name = name;  
 	item->addr = addr;
 
    //get the hash 
-	int hashIndex = hashCode(addr);
+	int hashIndex = hash(addr);
 
    //move in array until an empty or deleted cell
-	while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->addr != NULL) {
+	while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->addr != -1) {
       //go to next cell
 		++hashIndex;
 		
       //wrap around the table
-		hashIndex %= SIZE;
+		hashIndex %= SYMBOL_TABLE_SIZE;
 	}
 	
 	hashArray[hashIndex] = item;
 }
 
-struct Symbol *find(char *name[]) {
+struct Symbol *find(char *name) {
    //get the hash 
-	int hashIndex = hashCode(name);  
+	int hashIndex = hash(name);  
 	
    //move in array until an empty 
 	while(hashArray[hashIndex] != NULL) {
@@ -51,7 +50,7 @@ struct Symbol *find(char *name[]) {
 		++hashIndex;
 		
       //wrap around the table
-		hashIndex %= SIZE;
+		hashIndex %= SYMBOL_TABLE_SIZE;
 	}        
 	
 	return NULL;        
@@ -60,10 +59,10 @@ struct Symbol *find(char *name[]) {
 void display_table() {
 	int i = 0;
 	
-	for(i = 0; i<SIZE; i++) {
+	for(i = 0; i<SYMBOL_TABLE_SIZE; i++) {
 
 		if(hashArray[i] != NULL)
-			printf(" (%d,%d)",hashArray[i]->name,hashArray[i]->addr);
+			printf(" (%s,%d)",hashArray[i]->name,hashArray[i]->addr);
 		else
 			printf(" ~~ ");
 	}

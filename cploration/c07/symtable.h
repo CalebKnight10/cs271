@@ -11,10 +11,11 @@ struct Symbol {
 	char *name;
 	hack_addr addr;
 } Symbol;
-struct Symbol* hashArray[SYMBOL_TABLE_SIZE]; 
 
-int hash(char *str);
+struct Symbol* hashArray[SYMBOL_TABLE_SIZE]; 
 struct Symbol *find(char * name);
+
+unsigned long hash(unsigned char *str);
 void insert(char* name, hack_addr addr);
 void display_table();
 
