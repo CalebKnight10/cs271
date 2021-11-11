@@ -2,30 +2,29 @@
 
 // Unsigned long extended size variable for storing numbers (32 bits or 4 bytes)
 // Won't store negatives... range [0-2^32-1]
-unsigned long hash(unsigned char *str) {
+int hash(char* str) {
 	unsigned long hash = 5381;
-	int c = 0;
-
-	while (c == *str++)
-            hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+	int c;
+	while ((c = *str++))
+		hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
 		// This allows us to wrap around the hash table
 		// Basically we can index without going over
 		// {[1],[2],[...],[end]-> back to [1]}
-		return hash %= SYMBOL_TABLE_SIZE;
+		return hash % SYMBOL_TABLE_SIZE;
 }
 
-void insert(char *name, hack_addr addr) {
+void insert(char* name, hack_addr addr) {
 
 	struct Symbol *item = (struct Symbol*) malloc(sizeof(struct Symbol));
-	item->name = name;  
-	item->addr = addr;
+	item->addr = addr;  
+	item->name = name;
 
    //get the hash 
-	int hashIndex = hash(addr);
+	int hashIndex = hash(name);
 
    //move in array until an empty or deleted cell
-	while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->addr != -1) {
+	while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->name != NULL) {
       //go to next cell
 		++hashIndex;
 		
@@ -36,11 +35,11 @@ void insert(char *name, hack_addr addr) {
 	hashArray[hashIndex] = item;
 }
 
-struct Symbol *find(char *name) {
+struct Symbol *find(char* name) {
    //get the hash 
 	int hashIndex = hash(name);  
 	
-   //move in array until an empty 
+   //move in array until find an empty spot
 	while(hashArray[hashIndex] != NULL) {
 
 		if(hashArray[hashIndex]->name == name)
