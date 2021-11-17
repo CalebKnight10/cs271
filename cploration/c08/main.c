@@ -9,8 +9,7 @@ int main(int argc, const char *argv[]) {
   FILE *file = fopen(argv[1], "r");
 
   if (file == NULL) {
-    perror("Unable to open file!");
-    exit(EXIT_FAILURE);
+    exit_program(EXIT_CANNOT_OPEN_FILE, argv[1]);
   } 
 
   parse(file);
