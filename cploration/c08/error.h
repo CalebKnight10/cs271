@@ -8,6 +8,7 @@ typedef enum exitcode {
  */
 	EXIT_INCORRECT_ARGUMENTS = 1,
 	EXIT_CANNOT_OPEN_FILE = 2,
+	EXIT_TOO_MANY_INSTRUCTIONS = 3, 
 } exitcode;
 
 void exit_program(enum exitcode code, ...); // ... means arg list size can vary

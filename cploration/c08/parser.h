@@ -40,7 +40,7 @@ typedef enum instr_type {
 	Inv_instr = -1, 
 	A_instr, 
 	C_instr
-}; instr_type
+} instr_type;
 
 char *strip(char *s);
 char *extract_label(const char *line, char* label);
