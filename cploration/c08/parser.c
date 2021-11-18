@@ -1,42 +1,44 @@
 #include "parser.h"
-#inlcude "symtable.h"
+#include "error.h"
+#include "symtable.h"
+
 void parse(FILE * file) {
 	char line[MAX_LINE_LENGTH] = "";
-	unsigned int line_num;
-	unsigned int inst_num;
+	unsigned int line_num = 0;
+	unsigned int instr_num = 0;
+
 	while (fgets(line, sizeof(line), file)) {
-		line_num ++;
+		++line_num;
+		if(instr_num > MAX_INSTRUCTION){ 
+			exit_program(EXIT_TOO_MANY_INSTRUCTIONS, MAX_INSTRUCTION + 1);
+        }
 		strip(line);
 		if (!*line) {
 			continue;
 		} 
-		char inst_type = '\0';
+		char instr_type = '\0';
 		if(is_Atype(line)) {
-			inst_type = 'A';
+			instr_type = 'A';
 		} 
 		else if(is_label(line)) {
-			inst_type = 'L';
+			instr_type = 'L';
 			char label[MAX_LABEL_LENGTH] = {0};
-			if(isalpha(line) < 0) {
+			if(!isalpha(line[0])) {
 				exit_program(EXIT_INVALID_LABEL, line_num, line);
 			}
 			if(symtable_find(line) == NULL) {
 				exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_num, line);
 			}
-			symtable_insert(line, inst_num);
+			symtable_insert(line, instr_num);
 			continue;
 			strcpy(line, extract_label(line, label));
 		}
 		else if(is_Ctype(line)) {
-			inst_type = 'C';
+			instr_type = 'C';
 		}
-		printf("%c  %s\n", inst_type, line);
-		inst_num ++;
+		printf("%c  %s\n", instr_type, line);
+		++instr_num;
 	}
-}
-
-if(inst_num > MAX_INSTRUCTION) {
-	exit_program(EXIT_TOO_MANY_INSTRUCTIONS, MAX_INSTRUCTION + 1);
 }
 
 char *strip(char *s) {

@@ -1,3 +1,6 @@
+#ifndef __PARSER_H__
+#define __PARSER_H__
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -28,23 +31,28 @@ typedef struct A_instruction {
 	bool is_addr;
 } a_instruction;
 
-typedef struct Instruction {
-	union AorC {
-		a_instruction;
-		c_instruction;
-	} AorC;
-	instr_type type_stored;
-} instruction;
-
 typedef enum instr_type {
 	Inv_instr = -1, 
 	A_instr, 
 	C_instr
 } instr_type;
 
+typedef struct Instruction {
+	union AorC {
+		a_instruction a;
+		c_instruction c;
+	} AorC;
+	 instr_type type_stored;
+} instruction;
+
 char *strip(char *s);
 char *extract_label(const char *line, char* label);
+
 void parse(FILE * file);
+
 bool is_Atype(const char *);
 bool is_label(const char *);
 bool is_Ctype(const char *);
+
+
+#endif
