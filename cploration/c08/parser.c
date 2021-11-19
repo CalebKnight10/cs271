@@ -4,6 +4,7 @@
 
 void parse(FILE * file) {
 	char line[MAX_LINE_LENGTH] = "";
+
 	unsigned int line_num = 0;
 	unsigned int instr_num = 0;
 
@@ -23,13 +24,15 @@ void parse(FILE * file) {
 		else if(is_label(line)) {
 			instr_type = 'L';
 			char label[MAX_LABEL_LENGTH] = {0};
+
 			if(!isalpha(line[0])) {
 				exit_program(EXIT_INVALID_LABEL, line_num, line);
 			}
 			if(symtable_find(line) == NULL) {
 				exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_num, line);
-			}
+			} else{
 			symtable_insert(line, instr_num);
+			}
 			continue;
 			strcpy(line, extract_label(line, label));
 		}

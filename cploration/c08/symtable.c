@@ -14,7 +14,7 @@ int hash(char* str) {
 		return hash % SYMBOL_TABLE_SIZE;
 }
 
-void insert(char* name, hack_addr addr) {
+void symtable_insert(char* name, hack_addr addr) {
 
 	struct Symbol *item = (struct Symbol*) malloc(sizeof(struct Symbol));
 	item->addr = addr;  
@@ -35,7 +35,7 @@ void insert(char* name, hack_addr addr) {
 	hashArray[hashIndex] = item;
 }
 
-struct Symbol *find(char* name) {
+struct Symbol *symtable_find(char* name) {
    //get the hash 
 	int hashIndex = hash(name);  
 	

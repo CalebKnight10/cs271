@@ -1,6 +1,7 @@
 #ifndef __SYMTABLE_H__
 #define __SYMTABLE_H__
 
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

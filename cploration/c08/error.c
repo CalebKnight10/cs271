@@ -10,7 +10,7 @@ const char *error_messages[] = {
 	[EXIT_SYMBOL_ALREADY_EXISTS] = "ine %u: %s: Symbol is already defined", 
 }; 
 
-void exit_prgoram(enum exitcode code, ...) {
+void exit_program(enum exitcode code, ...) {
 	va_list arguments;
 	va_start(arguments, code);
 
