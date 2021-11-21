@@ -43,18 +43,18 @@ CHIP CPU {
     PARTS:
     //First Mux
     Not(in=instruction[15], out=notIn);
-    Mux16(a=outM, b=instruction, sel=notIn, out=outMorInstruction);
+    Mux16(a=outALU, b=instruction, sel=notIn, out=outMorInstruction);
 
     //Registers
-    Or(a=notin, b=instruction[15], out=loadA);
+    Or(a=instruction[5], b=notIn, out=loadA);
     ARegister(in=outMorInstruction, load=loadA, out=outA, out[0..14]=addressM);
     Mux16(a=outA, b=inM, sel=AorM, out=outAM);
 
     And(a=instruction[14], b=instruction[4], out=loadD);
-    DRegister(in=outM, load=loadD, out=outD);
+    DRegister(in=outALU, load=loadD, out=outD);
 
     //Second Mux
-    And(a=instruction[15],b=instruction[12],out=AorM);
+    And(a=instruction[12],b=instruction[15],out=AorM);
 
     //ALU Control Bits
     ALU(x=outD, y=outAM, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8],
@@ -69,7 +69,7 @@ CHIP CPU {
 
     //JGT 001 Jump Greater Than Zero
     And(a=notZR, b=positive, out=positiveAndnotZR);
-    And(a=positiveAndnotZR, instruction[0], out=jgt);
+    And(a=positiveAndnotZR, b=instruction[0], out=jgt);
     And(a=jgt, b=instruction[15], out=JGT);
 
     //JEQ 010 Jump Equal to Zero
@@ -104,8 +104,9 @@ CHIP CPU {
     And(a=instruction[3], b=instruction[15], out=writeM);
 
     //Choose jumps
-    Or8Way(in[0]=JGT, in[1]=JEQ, in[2]=JGE, in[3]=JLT, in[4]=JNE, in[5]=JLE, in[6]=JMP, in[7]=FALSE, out=intoPC);
+    Or8Way(in[0]=JGT, in[1]=JEQ, in[2]=JGE, in[3]=JLT, in[4]=JNE, in[5]=JLE, in[6]=JMP, in[7]=false, out=intoPC);
 
     //PC
-    PC(in=loadA, load=intoPC, inc=tru, reset=reset, out[0..14]=pc);
+    PC(in=outA, load=intoPC, inc=true, reset=reset, out[0..14]=pc);
+
 }
