@@ -58,7 +58,7 @@ struct Symbol *symtable_find(char* name) {
 void display_table() {
 	int i = 0;
 	
-	for(i = 0; i<SYMBOL_TABLE_SIZE; i++) {
+	for(i = 0; i < SYMBOL_TABLE_SIZE; i++) {
 
 		if(hashArray[i] != NULL)
 			printf(" (%s,%d)",hashArray[i]->name,hashArray[i]->addr);

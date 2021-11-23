@@ -60,6 +60,13 @@ char *strip(char *s) {
 	return s;
 }
 
+void add_predefined_symbols() {
+	for(i=0; i < NUM_PREDEFINED_SYMBOLS; i++) {
+		predefined_symbols[i++] = predefined_symbol;
+		symtable_insert(predefined_symbols, predefined_symbol);
+	}
+}
+
 char *extract_label(const char *line, char* label) {
 	int i = 0;
 	for(const char *label2 = line; *label2; label2++) {
