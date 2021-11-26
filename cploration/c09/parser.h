@@ -49,6 +49,7 @@ typedef struct Instruction {
 char *strip(char *s);
 char *extract_label(const char *line, char* label);
 
+void add_predefined_symbols();
 void parse(FILE * file);
 
 bool is_Atype(const char *);

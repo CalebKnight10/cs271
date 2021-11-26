@@ -8,6 +8,9 @@ void parse(FILE * file) {
 	unsigned int line_num = 0;
 	unsigned int instr_num = 0;
 
+	void add_predefined_symbols();
+	void symtable_display_table();
+
 	while (fgets(line, sizeof(line), file)) {
 		++line_num;
 		if(instr_num > MAX_INSTRUCTION){ 
@@ -60,13 +63,6 @@ char *strip(char *s) {
 	return s;
 }
 
-void add_predefined_symbols() {
-	for(i=0; i < NUM_PREDEFINED_SYMBOLS; i++) {
-		predefined_symbols[i++] = predefined_symbol;
-		symtable_insert(predefined_symbols, predefined_symbol);
-	}
-}
-
 char *extract_label(const char *line, char* label) {
 	int i = 0;
 	for(const char *label2 = line; *label2; label2++) {
@@ -91,4 +87,12 @@ bool is_label(const char *line) {
 
 bool is_Ctype(const char *line) {
 	return !is_label(line) && !is_Atype(line);
+}
+
+void add_predefined_symbols() {
+	int i = 0;
+	for(i = 0; i < NUM_PREDEFINED_SYMBOLS; i++) {
+		predefined_symbol symbol= predefined_symbols[i];
+		symtable_insert(symbol.name, symbol.address);
+	}
 }

@@ -1,6 +1,7 @@
 #include "error.h"
 #include "symtable.h"
 #include "parser.h"
+#include "hack.h"
 
 int main(int argc, const char *argv[]) {
   if (argc != 2) {
@@ -16,4 +17,6 @@ int main(int argc, const char *argv[]) {
   parse(file);
 
   fclose(file);
+
+  return 0;
 }
