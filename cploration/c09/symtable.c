@@ -1,4 +1,6 @@
 #include "symtable.h"
+#include <stdio.h>
+
 
 // Unsigned long extended size variable for storing numbers (32 bits or 4 bytes)
 // Won't store negatives... range [0-2^32-1]
@@ -55,7 +57,7 @@ struct Symbol *symtable_find(char* name) {
 	return NULL;        
 }
 
-void display_table() {
+void symtable_display_table() {
 	int i = 0;
 	
 	for(i = 0; i < SYMBOL_TABLE_SIZE; i++) {
