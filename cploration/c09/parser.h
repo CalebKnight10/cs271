@@ -17,33 +17,33 @@
 typedef int16_t hack_addr;
 typedef int16_t opcode;
 
-typedef struct C_instruction {
+enum instr_type {
+	Inv_instr = -1, 
+	A_instr, 
+	C_instr
+};
+
+typedef struct c_instruction {
 	opcode a:1;
 	opcode comp:6;
 	opcode dest:3;
 	opcode jump:3;
 } c_instruction;
 
-typedef struct A_instruction {
-	union AddyOrLabel {
+typedef struct a_instruction {
+	union {
 		hack_addr addy;
 		char * label;
-	} AddyOrLabel;
+	};
 	bool is_addr;
 } a_instruction;
 
-typedef enum instr_type {
-	Inv_instr = -1, 
-	A_instr, 
-	C_instr
-} instr_type;
-
-typedef struct Instruction {
-	union AorC {
-		a_instruction a;
-		c_instruction c;
-	} AorC;
-	 instr_type type_stored;
+typedef struct instruction {
+	union {
+		a_instruction a_instr;
+		c_instruction c_instr;
+	};
+	 bool instr_type;
 } instruction;
 
 char *strip(char *s);

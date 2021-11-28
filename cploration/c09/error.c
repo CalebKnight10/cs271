@@ -7,7 +7,8 @@ const char *error_messages[] = {
 	[EXIT_CANNOT_OPEN_FILE] = "Cannot open file %s", 
 	[EXIT_TOO_MANY_INSTRUCTIONS] = "File contains than the maximum %u instructions", 
 	[EXIT_INVALID_LABEL] = "Line %u: %s: Invalid label name", 
-	[EXIT_SYMBOL_ALREADY_EXISTS] = "ine %u: %s: Symbol is already defined", 
+	[EXIT_SYMBOL_ALREADY_EXISTS] = "Line %u: %s: Symbol is already defined", 
+	[EXIT_INVALID_A_INSTRUCTION] = "Line %u: %s : Invalid A-instruction operand", 
 }; 
 
 void exit_program(enum exitcode code, ...) {

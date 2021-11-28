@@ -4,24 +4,29 @@
 
 void parse(FILE * file) {
 	char line[MAX_LINE_LENGTH] = "";
+	instruction instr;
 
 	unsigned int line_num = 0;
 	unsigned int instr_num = 0;
 
-	void add_predefined_symbols();
-	void symtable_display_table();
+	 add_predefined_symbols();
+	 symtable_display_table();
 
 	while (fgets(line, sizeof(line), file)) {
 		++line_num;
 		if(instr_num > MAX_INSTRUCTION){ 
 			exit_program(EXIT_TOO_MANY_INSTRUCTIONS, MAX_INSTRUCTION + 1);
-        }
+		}
 		strip(line);
 		if (!*line) {
 			continue;
 		} 
 		char instr_type = '\0';
 		if(is_Atype(line)) {
+			if (!parse_A_instruction(line, &instr.a_instr)){
+				exit_program(EXIT_INVALID_A_INSTRUCTION, line_num, line);
+			}
+			instr.instr_type = A_instr;
 			instr_type = 'A';
 		} 
 		else if(is_label(line)) {
@@ -34,7 +39,7 @@ void parse(FILE * file) {
 			if(symtable_find(line) == NULL) {
 				exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_num, line);
 			} else{
-			symtable_insert(line, instr_num);
+				symtable_insert(line, instr_num);
 			}
 			continue;
 			strcpy(line, extract_label(line, label));
@@ -112,7 +117,7 @@ bool parse_A_instruction(const char *line, a_instruction *instr) {
 	}
 	else {
 		instr->addy = result;
-	    instr->is_addr = true;
+		instr->is_addr = true;
 	}
 	return true;
 }
