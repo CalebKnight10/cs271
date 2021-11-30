@@ -38,29 +38,29 @@ typedef struct predefined_symbol {
 } predefined_symbol;
 
 static const predefined_symbol predefined_symbols[NUM_PREDEFINED_SYMBOLS] = {
-    {"R0", SYM_R0}, 
-    {"R1", SYM_R1}, 
-    {"R2", SYM_R2}, 
-    {"R3", SYM_R3}, 
-    {"R4", SYM_R4}, 
-    {"R5", SYM_R5}, 
-    {"R6", SYM_R6}, 
-    {"R7", SYM_R7}, 
-    {"R8", SYM_R8}, 
-    {"R9", SYM_R9}, 
-    {"R10", SYM_R10}, 
-    {"R11", SYM_R11}, 
-    {"R12", SYM_R12}, 
-    {"R13", SYM_R13}, 
-    {"R14", SYM_R14}, 
-    {"R15", SYM_R15}, 
-    {"SCREEN", SYM_SCREEN}, 
-    {"KBD", SYM_KBD}, 
-    {"SP", SYM_SP}, 
-    {"LCL", SYM_LCL}, 
-    {"ARG", SYM_ARG}, 
-    {"THIS", SYM_THIS}, 
-    {"THAT", SYM_THAT}, 
+	{"R0", SYM_R0}, 
+	{"R1", SYM_R1}, 
+	{"R2", SYM_R2}, 
+	{"R3", SYM_R3}, 
+	{"R4", SYM_R4}, 
+	{"R5", SYM_R5}, 
+	{"R6", SYM_R6}, 
+	{"R7", SYM_R7}, 
+	{"R8", SYM_R8}, 
+	{"R9", SYM_R9}, 
+	{"R10", SYM_R10}, 
+	{"R11", SYM_R11}, 
+	{"R12", SYM_R12}, 
+	{"R13", SYM_R13}, 
+	{"R14", SYM_R14}, 
+	{"R15", SYM_R15}, 
+	{"SCREEN", SYM_SCREEN}, 
+	{"KBD", SYM_KBD}, 
+	{"SP", SYM_SP}, 
+	{"LCL", SYM_LCL}, 
+	{"ARG", SYM_ARG}, 
+	{"THIS", SYM_THIS}, 
+	{"THAT", SYM_THAT}, 
 };
 
 typedef enum jump_id {
@@ -116,9 +116,28 @@ typedef enum comp_id {
 	COMP_DminusM = 19,
 	COMP_MminusD = 7,
 	COMP_DandM = 0,
-	COMP_DorM = 21
+	COMP_DorM = 21g
 } comp_id;
 
-
+static inline jump_id str_to_jumpid(const char *s) {
+	jump_id id = JMP_INVALID;
+	if (s == NULL) {
+		id = JMP_NULL;
+	} else if (s == 1) {
+		id = JMP_JGT;
+	} else if (s == 2) {
+		id = JMP_JEQ;
+	} else if (s == 3) {
+		id = JMP_JGE;
+	} else if (s == 4) {
+		id = JMP_JLT;
+	} else if (s == 5) {
+		id = JMP_JNE;
+	} else if (s == 6) {
+		id = JMP_JLE;
+	} else if (s == 7) {
+		id = JMP;
+	}
+}
 
 #endif
