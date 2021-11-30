@@ -123,21 +123,22 @@ static inline jump_id str_to_jumpid(const char *s) {
 	jump_id id = JMP_INVALID;
 	if (s == NULL) {
 		id = JMP_NULL;
-	} else if (s == 1) {
+	} else if (!strcmp(s, "JGT")) {
 		id = JMP_JGT;
-	} else if (s == 2) {
+	} else if (!strcmp(s, "JEQ")) {
 		id = JMP_JEQ;
-	} else if (s == 3) {
+	} else if (!strcmp(s, "JGE")) {
 		id = JMP_JGE;
-	} else if (s == 4) {
+	} else if (!strcmp(s, "JLT")) {
 		id = JMP_JLT;
-	} else if (s == 5) {
+	} else if (!strcmp(s, "JNE")) {
 		id = JMP_JNE;
-	} else if (s == 6) {
+	} else if (!strcmp(s, "JLE")) {
 		id = JMP_JLE;
-	} else if (s == 7) {
+	} else if (!strcmp(s, "JMP")) {
 		id = JMP;
 	}
+	return id;
 }
 
 #endif
