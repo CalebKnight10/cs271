@@ -106,7 +106,7 @@ typedef enum comp_id {
 	COMP_DminusA = 19,
 	COMP_AminusD = 7,
 	COMP_DandA = 0,
-	COMP_DorA = 21
+	COMP_DorA = 21,
 	COMP_M = 48,
 	COMP_notM = 49,
 	COMP_negM = 51,
@@ -116,7 +116,7 @@ typedef enum comp_id {
 	COMP_DminusM = 19,
 	COMP_MminusD = 7,
 	COMP_DandM = 0,
-	COMP_DorM = 21g
+	COMP_DorM = 21
 } comp_id;
 
 static inline jump_id str_to_jumpid(const char *s) {
@@ -140,5 +140,28 @@ static inline jump_id str_to_jumpid(const char *s) {
 	}
 	return id;
 }
+
+static inline comp_id str_to_destid(const char *s) {
+	dest_id id = DEST_INVALID;
+	if (s == NULL) {
+		id = DEST_NULL;
+	} else if (!strcmp(s, "M")) {
+		id = DEST_M;
+	} else if (!strcmp(s, "D")) {
+		id = DEST_D;
+	} else if (!strcmp(s, "MD")) {
+		id = DEST_MD;
+	} else if (!strcmp(s, "A")) {
+		id = DEST_A;
+	} else if (!strcmp(s, "AM")) {
+		id = DEST_AM;
+	} else if (!strcmp(s, "AD")) {
+		id = DEST_AD;
+	} else if (!strcmp(s, "AMD")) {
+		id = DEST_AMD;
+	}
+	return id;
+}
+
 
 #endif
