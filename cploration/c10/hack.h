@@ -64,26 +64,58 @@ static const predefined_symbol predefined_symbols[NUM_PREDEFINED_SYMBOLS] = {
 };
 
 typedef enum jump_id {
-	JMP_INVALID = -1;
-	JMP_NULL;
-	JMP_JGT = 1;
-	JMP_JEQ = 2;
-	JMP_JGE = 3;
-	JMP_JLT = 4;
-	JMP_JNE = 5;
-	JMP_JLE = 6;
-	JMP = 7;
+	JMP_INVALID = -1,
+	JMP_NULL,
+	JMP_JGT = 1,
+	JMP_JEQ = 2,
+	JMP_JGE = 3,
+	JMP_JLT = 4,
+	JMP_JNE = 5,
+	JMP_JLE = 6,
+	JMP = 7
 } jump_id;
 
 typedef enum dest_id {
-	DEST_INVALID = -1;
-	DEST_NULL;
-	DEST_M = 1;
-	DEST_D = 2;
-	DEST_MD = 3;
-	DEST_A = 4;
-	DEST_AM = 5;
-	DEST_AD = 6;
-	DEST_AMD = 7;
+	DEST_INVALID = -1,
+	DEST_NULL,
+	DEST_M = 1,
+	DEST_D = 2,
+	DEST_MD = 3,
+	DEST_A = 4,
+	DEST_AM = 5,
+	DEST_AD = 6,
+	DEST_AMD = 7
 } dest_id;
+
+typedef enum comp_id {
+	COMP_INVALID = -1,
+	COMP_0 = 42,
+	COMP_1 = 63,
+	COMP_neg1 = 58,
+	COMP_D = 12,
+	COMP_A = 48,
+	COMP_notD = 13,
+	COMP_notA = 49,
+	COMP_nedD = 15,
+	COMP_negA = 51,
+	COMP_Dplus1 = 31,
+	COMP_Aplus1 = 55,
+	COMP_Dminus1 = 14,
+	COMP_Aminus1 = 50,
+	COMP_DplusA = 2,
+	COMP_DminusA = 19,
+	COMP_AminusD = 7,
+	COMP_DandA = 0,
+	COMP_DorA = 21
+	COMP_M = -16,
+	COMP_notM = -15,
+	COMP_negM = -13,
+	COMP_Mplus1 = -9,
+	COMP_Mminus1 = -14,
+	COMP_DplusM = -62,
+	COMP_DminusM = -45,
+	COMP_MminusD = -57,
+	COMP_DandM = -64,
+	COMP_DorM = -43
+} comp_id;
 #endif
