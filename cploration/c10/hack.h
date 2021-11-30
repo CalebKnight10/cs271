@@ -107,15 +107,18 @@ typedef enum comp_id {
 	COMP_AminusD = 7,
 	COMP_DandA = 0,
 	COMP_DorA = 21
-	COMP_M = -16,
-	COMP_notM = -15,
-	COMP_negM = -13,
-	COMP_Mplus1 = -9,
-	COMP_Mminus1 = -14,
-	COMP_DplusM = -62,
-	COMP_DminusM = -45,
-	COMP_MminusD = -57,
-	COMP_DandM = -64,
-	COMP_DorM = -43
+	COMP_M = 48,
+	COMP_notM = 49,
+	COMP_negM = 51,
+	COMP_Mplus1 = 55,
+	COMP_Mminus1 = 50,
+	COMP_DplusM = 2,
+	COMP_DminusM = 19,
+	COMP_MminusD = 7,
+	COMP_DandM = 0,
+	COMP_DorM = 21
 } comp_id;
+
+
+
 #endif
