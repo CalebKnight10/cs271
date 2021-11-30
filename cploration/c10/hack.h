@@ -75,4 +75,15 @@ typedef enum jump_id {
 	JMP = 7;
 } jump_id;
 
+typedef enum dest_id {
+	DEST_INVALID = -1;
+	DEST_NULL;
+	DEST_M = 1;
+	DEST_D = 2;
+	DEST_MD = 3;
+	DEST_A = 4;
+	DEST_AM = 5;
+	DEST_AD = 6;
+	DEST_AMD = 7;
+} dest_id;
 #endif
