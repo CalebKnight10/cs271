@@ -96,7 +96,7 @@ typedef enum comp_id {
 	COMP_A = 48,
 	COMP_notD = 13,
 	COMP_notA = 49,
-	COMP_nedD = 15,
+	COMP_negD = 15,
 	COMP_negA = 51,
 	COMP_Dplus1 = 31,
 	COMP_Aplus1 = 55,
@@ -141,7 +141,7 @@ static inline jump_id str_to_jumpid(const char *s) {
 	return id;
 }
 
-static inline comp_id str_to_destid(const char *s) {
+static inline dest_id str_to_destid(const char *s) {
 	dest_id id = DEST_INVALID;
 	if (s == NULL) {
 		id = DEST_NULL;
@@ -159,6 +159,72 @@ static inline comp_id str_to_destid(const char *s) {
 		id = DEST_AD;
 	} else if (!strcmp(s, "AMD")) {
 		id = DEST_AMD;
+	}
+	return id;
+}
+
+static inline comp_id str_to_compid(const char *s, int *a) {
+	comp_id id = COMP_INVALID;
+	if (*a == 0) {
+		if (!strcmp(s, "42")) {
+			id = COMP_0;
+		} else if(!strcmp(s, "63")) {
+			id = COMP_1;
+		} else if (!strcmp(s, "58")) {
+			id = COMP_neg1;
+		} else if (!strcmp(s, "12")) {
+			id = COMP_D;
+		} else if (!strcmp(s, "48")) {
+			id = COMP_A;
+		} else if (!strcmp(s, "13")) {
+			id = COMP_notD;
+		} else if (!strcmp(s, "49")) {
+			id = COMP_notA;
+		} else if (!strcmp(s, "15")) {
+			id = COMP_negD;
+		} else if (!strcmp(s, "51")) {
+			id = COMP_negA;
+		} else if (!strcmp(s, "31")) {
+			id = COMP_Dplus1;
+		} else if (!strcmp(s, "55")) {
+			id = COMP_Aplus1;
+		} else if (!strcmp(s, "14")) {
+			id = COMP_Dminus1;
+		} else if (!strcmp(s, "50")) {
+			id = COMP_Aminus1;
+		} else if (!strcmp(s, "2")) {
+			id = COMP_DplusA;
+		} else if (!strcmp(s, "19")) {
+			id = COMP_DminusA;
+		} else if (!strcmp(s, "7")) {
+			id = COMP_AminusD;
+		} else if (!strcmp(s, "0")) {
+			id = COMP_DandA;
+		} else if (!strcmp(s, "21")) {
+			id = COMP_DorA;
+		}
+	} else if (*a == 1) {
+		if (!strcmp(s, "48")) {
+			id = COMP_M;
+		} else if (!strcmp(s, "49")) {
+			id = COMP_notM;
+		} else if (!strcmp(s, "51")) {
+			id = COMP_negM;
+		} else if (!strcmp(s, "55")) {
+			id = COMP_Mplus1;
+		} else if (!strcmp(s, "50")) {
+			id = COMP_Mminus1;
+		} else if (!strcmp(s, "2")) {
+			id = COMP_DplusM;
+		} else if (!strcmp(s, "19")) {
+			id = COMP_DminusM;
+		} else if (!strcmp(s, "7")) {
+			id = COMP_MminusD;
+		} else if (!strcmp(s, "0")) {
+			id = COMP_DandM;
+		} else if (!strcmp(s, "21")) {
+			id = COMP_DorM;
+		}
 	}
 	return id;
 }
