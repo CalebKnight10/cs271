@@ -50,7 +50,7 @@ char *strip(char *s);
 char *extract_label(const char *line, char* label);
 
 void add_predefined_symbols();
-void parse(FILE * file);
+int parse(FILE * file, instruction *instructions);
 
 bool parse_A_instruction(const char *line, a_instruction *instr);
 void parse_C_instruction(char *line, c_instruction *instr);

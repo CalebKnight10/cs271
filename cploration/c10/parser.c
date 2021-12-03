@@ -3,7 +3,7 @@
 #include "symtable.h"
 #include "hack.h"
 
-void parse(FILE * file) {
+int parse(FILE * file, instruction *instructions) {
 	char line[MAX_LINE_LENGTH] = "";
 	instruction instr;
 
@@ -45,10 +45,10 @@ void parse(FILE * file) {
 			continue;
 			strcpy(line, extract_label(line, label));
 		}
-		else if(is_Ctype(line)) {
+		else if (is_Ctype(line)) {
 			instr_type = 'C';
 			char temp_line[MAX_LINE_LENGTH];
-			strcpy(tmp_line, line);
+			strcpy(temp_line, line);
 			parse_C_instruction(temp_line, &instr.c_instr);
 			if (instr.c_instr.dest == -1) {
 				exit_program(EXIT_INVALID_C_DEST, line_num, line);
@@ -63,8 +63,9 @@ void parse(FILE * file) {
 
 		}
 		printf("%c  %s\n", instr_type, line);
-		++instr_num;
+		instructions[instr_num++] = instr;
 	}
+	return instr_num;
 }
 
 char *strip(char *s) {
@@ -153,7 +154,7 @@ void parse_C_instruction(char *line, c_instruction *instr) {
 	}
 	instr->comp = str_to_compid(comp, &a);
 	instr->dest = str_to_destid(dest);
-	instr->jump = str_to_jumpid(jmp);
+	instr->jump = str_to_jumpid(jump);
 	instr->a = a == 0 ? 0 : 1;
 
 }
