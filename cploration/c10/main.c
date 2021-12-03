@@ -3,7 +3,13 @@
 #include "parser.h"
 #include "hack.h"
 
+#define MAX_INSTRUCTION_COUNT 30000
+
+
 int main(int argc, const char *argv[]) {
+  instruction *instructions = malloc(MAX_INSTRUCTION_COUNT * sizeof(instruction));
+
+
   if (argc != 2) {
     //incorrect number of arguments
     exit_program(EXIT_INCORRECT_ARGUMENTS, argv[0]);
@@ -14,9 +20,10 @@ int main(int argc, const char *argv[]) {
     exit_program(EXIT_CANNOT_OPEN_FILE, argv[1]);
   } 
 
-  parse(file);
+  int num_instructions = parse(file, instructions);
 
   fclose(file);
 
   return 0;
+  free(instructions);
 }
