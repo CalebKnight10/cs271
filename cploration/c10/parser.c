@@ -1,6 +1,7 @@
 #include "parser.h"
 #include "error.h"
 #include "symtable.h"
+#include "hack.h"
 
 void parse(FILE * file) {
 	char line[MAX_LINE_LENGTH] = "";
@@ -62,8 +63,8 @@ char *strip(char *s) {
 		else if(!isspace(*s2)) {
 			s_new[i++] = *s2;
 		}
-		s_new[i] = '\0';
 	}
+	s_new[i] = '\0';
 	strcpy(s, s_new);
 	return s;
 }
@@ -122,3 +123,23 @@ bool parse_A_instruction(const char *line, a_instruction *instr) {
 	return true;
 }
 
+void parse_C_instruction(char *line, c_instruction *instr) {
+	char *temp;
+	int a;
+	char *jump;
+	char *dest;
+	char *comp;
+	temp = strtok(line, ";");
+	jump = strtok(NULL, " ");
+	dest = strtok(temp, "=");
+	comp = strtok(NULL, "=");
+	if (comp == NULL) {
+		comp = dest;
+		dest = NULL;
+	}
+	instr->comp = str_to_compid(comp, &a);
+	instr->dest = str_to_destid(dest);
+	instr->jump = str_to_jumpid(jmp);
+	instr->a = a == 0 ? 0 : 1;
+
+}

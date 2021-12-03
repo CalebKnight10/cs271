@@ -16,14 +16,14 @@ int hash(char* str) {
 		return hash % SYMBOL_TABLE_SIZE;
 }
 
-void symtable_insert(char* name, hack_addr addr) {
+void symtable_insert(char* key, hack_addr addr) {
 
 	struct Symbol *item = (struct Symbol*) malloc(sizeof(struct Symbol));
 	item->addr = addr;  
-	item->name = name;
-
+	item->name = (char*)malloc(strlen(key) + 1);
+	strcpy(item->name, key);
    //get the hash 
-	int hashIndex = hash(name);
+	int hashIndex = hash(key);
 
    //move in array until an empty or deleted cell
 	while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->name != NULL) {
@@ -37,15 +37,16 @@ void symtable_insert(char* name, hack_addr addr) {
 	hashArray[hashIndex] = item;
 }
 
-struct Symbol *symtable_find(char* name) {
+struct Symbol *symtable_find(char* key) {
    //get the hash 
-	int hashIndex = hash(name);  
+	int hashIndex = hash(key);  
 	
    //move in array until find an empty spot
 	while(hashArray[hashIndex] != NULL) {
 
-		if(hashArray[hashIndex]->name == name)
+		if(!strcmp(hashArray[hashIndex]->name, key)) {
 			return hashArray[hashIndex]; 
+		}
 
       //go to next cell
 		++hashIndex;

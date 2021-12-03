@@ -53,6 +53,7 @@ void add_predefined_symbols();
 void parse(FILE * file);
 
 bool parse_A_instruction(const char *line, a_instruction *instr);
+void parse_C_instruction(char *line, c_instruction *instr);
 bool is_Atype(const char *);
 bool is_label(const char *);
 bool is_Ctype(const char *);
