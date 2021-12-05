@@ -10,7 +10,7 @@ const char *error_messages[] = {
 	[EXIT_SYMBOL_ALREADY_EXISTS] = "Line %u: %s: Symbol is already defined", 
 	[EXIT_INVALID_A_INSTRUCTION] = "Line %u: %s : Invalid A-instruction operand", 
 	[EXIT_INVALID_C_DEST] = "Line %u: %s : Invalid destination part of C-instruction",
-	[EXIT_INVALID_C_COMP] = "Line %u: %s : Ivalid compare part of C-instruction",
+	[EXIT_INVALID_C_COMP] = "Line %u: %s : Invalid compare part of C-instruction",
 	[EXIT_INVALID_C_JUMP] = "Line %u: %s : Invalid jump part of C-instruction",
 }; 
 
