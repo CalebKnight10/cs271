@@ -168,6 +168,7 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
 	int new_addy = 16;
 
 	for(int i = 0; i < num_instructions; i++) {
+
 		if(instructions.field[i] == 0) {
 			if(instructions[i].A_or_C.is_addr == false) {
 				if(symtable_find(instructions[i].A_or_C.instr_type.label)) {
@@ -190,3 +191,14 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
 	}
 	fclose(hack);
 }
+
+opcode instruction_to_opcode(c_instruction instr) {
+	opcode op = 0;
+	op |= (7 << 13);
+	op |= (instr.a_instr << 12);
+	op |= (instr.comp << 6);
+	op |= (instr.dest << 3);
+	op |= (instr.jump << 0);
+	return op;
+}
+
