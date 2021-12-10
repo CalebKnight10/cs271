@@ -1,8 +1,12 @@
 #ifndef __HACK_H__
 #define __HACK_H__
 
-#include <string.h>
+#include "parser.h"
+#include "error.h"
+#include "symtable.h"
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define NUM_PREDEFINED_SYMBOLS 23
 
@@ -23,7 +27,6 @@
   (opcode & 0x4 ? '1' : '0'), \
   (opcode & 0x2 ? '1' : '0'), \
   (opcode & 0x1 ? '1' : '0') \
-
 
 typedef enum symbol_id {
 	SYM_R0 = 0,
@@ -56,32 +59,6 @@ typedef struct predefined_symbol {
 	int16_t address;
 } predefined_symbol;
 
-static const predefined_symbol predefined_symbols[NUM_PREDEFINED_SYMBOLS] = {
-	{"R0", SYM_R0}, 
-	{"R1", SYM_R1}, 
-	{"R2", SYM_R2}, 
-	{"R3", SYM_R3}, 
-	{"R4", SYM_R4}, 
-	{"R5", SYM_R5}, 
-	{"R6", SYM_R6}, 
-	{"R7", SYM_R7}, 
-	{"R8", SYM_R8}, 
-	{"R9", SYM_R9}, 
-	{"R10", SYM_R10}, 
-	{"R11", SYM_R11}, 
-	{"R12", SYM_R12}, 
-	{"R13", SYM_R13}, 
-	{"R14", SYM_R14}, 
-	{"R15", SYM_R15}, 
-	{"SCREEN", SYM_SCREEN}, 
-	{"KBD", SYM_KBD}, 
-	{"SP", SYM_SP}, 
-	{"LCL", SYM_LCL}, 
-	{"ARG", SYM_ARG}, 
-	{"THIS", SYM_THIS}, 
-	{"THAT", SYM_THAT}, 
-};
-
 typedef enum jump_id {
 	JMP_INVALID = -1,
 	JMP_NULL,
@@ -108,6 +85,7 @@ typedef enum dest_id {
 
 typedef enum comp_id {
 	COMP_INVALID = -1,
+	COMP_NULL,
 	COMP_0 = 42,
 	COMP_1 = 63,
 	COMP_neg1 = 58,
@@ -137,6 +115,32 @@ typedef enum comp_id {
 	COMP_DandM = 0,
 	COMP_DorM = 21
 } comp_id;
+
+static const predefined_symbol predefined_symbols[NUM_PREDEFINED_SYMBOLS] = {
+	{"R0", SYM_R0}, 
+	{"R1", SYM_R1}, 
+	{"R2", SYM_R2}, 
+	{"R3", SYM_R3}, 
+	{"R4", SYM_R4}, 
+	{"R5", SYM_R5}, 
+	{"R6", SYM_R6}, 
+	{"R7", SYM_R7}, 
+	{"R8", SYM_R8}, 
+	{"R9", SYM_R9}, 
+	{"R10", SYM_R10}, 
+	{"R11", SYM_R11}, 
+	{"R12", SYM_R12}, 
+	{"R13", SYM_R13}, 
+	{"R14", SYM_R14}, 
+	{"R15", SYM_R15}, 
+	{"SCREEN", SYM_SCREEN}, 
+	{"KBD", SYM_KBD}, 
+	{"SP", SYM_SP}, 
+	{"LCL", SYM_LCL}, 
+	{"ARG", SYM_ARG}, 
+	{"THIS", SYM_THIS}, 
+	{"THAT", SYM_THAT}, 
+};
 
 static inline jump_id str_to_jumpid(const char *s) {
 	jump_id id = JMP_INVALID;
@@ -182,70 +186,97 @@ static inline dest_id str_to_destid(const char *s) {
 	return id;
 }
 
+
 static inline comp_id str_to_compid(const char *s, int *a) {
-	comp_id id = COMP_INVALID;
-	if (*a == 0) {
-		if (!strcmp(s, "42")) {
-			id = COMP_0;
-		} else if(!strcmp(s, "63")) {
-			id = COMP_1;
-		} else if (!strcmp(s, "58")) {
-			id = COMP_neg1;
-		} else if (!strcmp(s, "12")) {
-			id = COMP_D;
-		} else if (!strcmp(s, "48")) {
-			id = COMP_A;
-		} else if (!strcmp(s, "13")) {
-			id = COMP_notD;
-		} else if (!strcmp(s, "49")) {
-			id = COMP_notA;
-		} else if (!strcmp(s, "15")) {
-			id = COMP_negD;
-		} else if (!strcmp(s, "51")) {
-			id = COMP_negA;
-		} else if (!strcmp(s, "31")) {
-			id = COMP_Dplus1;
-		} else if (!strcmp(s, "55")) {
-			id = COMP_Aplus1;
-		} else if (!strcmp(s, "14")) {
-			id = COMP_Dminus1;
-		} else if (!strcmp(s, "50")) {
-			id = COMP_Aminus1;
-		} else if (!strcmp(s, "2")) {
-			id = COMP_DplusA;
-		} else if (!strcmp(s, "19")) {
-			id = COMP_DminusA;
-		} else if (!strcmp(s, "7")) {
-			id = COMP_AminusD;
-		} else if (!strcmp(s, "0")) {
-			id = COMP_DandA;
-		} else if (!strcmp(s, "21")) {
-			id = COMP_DorA;
-		}
-	} else if (*a == 1) {
-		if (!strcmp(s, "48")) {
-			id = COMP_M;
-		} else if (!strcmp(s, "49")) {
-			id = COMP_notM;
-		} else if (!strcmp(s, "51")) {
-			id = COMP_negM;
-		} else if (!strcmp(s, "55")) {
-			id = COMP_Mplus1;
-		} else if (!strcmp(s, "50")) {
-			id = COMP_Mminus1;
-		} else if (!strcmp(s, "2")) {
-			id = COMP_DplusM;
-		} else if (!strcmp(s, "19")) {
-			id = COMP_DminusM;
-		} else if (!strcmp(s, "7")) {
-			id = COMP_MminusD;
-		} else if (!strcmp(s, "0")) {
-			id = COMP_DandM;
-		} else if (!strcmp(s, "21")) {
-			id = COMP_DorM;
-		}
-	}
-	return id;
+    comp_id id = COMP_INVALID;
+    if(s == NULL) {
+    	id = COMP_NULL;
+    } else if (strcmp(s, "0") == 0) {
+        id = COMP_0;
+        *a = 0;
+    } else if (strcmp(s, "1") == 0) {
+        id = COMP_1;
+        *a = 0;
+    } else if (strcmp(s, "-1") == 0) {
+        id = COMP_neg1;
+        *a = 0;
+    } else if (strcmp(s, "D") == 0) {
+        id = COMP_D;
+        *a = 0;
+    } else if (strcmp(s, "A") == 0) {
+        id = COMP_A;
+        *a = 0;
+    } else if (strcmp(s, "M") == 0) {
+        id = COMP_M;
+        *a = 1;
+    } else if (strcmp(s, "!D") == 0) {
+        id = COMP_notD;
+        *a = 0;
+    } else if (strcmp(s, "!A") == 0) {
+        id = COMP_notA;
+        *a = 0;
+    } else if (strcmp(s, "!M") == 0) {
+        id = COMP_notM;
+        *a = 1;
+    } else if (strcmp(s, "-D") == 0) {
+        id = COMP_negD;
+        *a = 0;
+    } else if (strcmp(s, "-A") == 0) {
+        id = COMP_negA;
+        *a = 0;
+    } else if (strcmp(s, "-M") == 0) {
+        id = COMP_negM;
+        *a = 1;
+    } else if (strcmp(s, "D+1") == 0) {
+        id = COMP_Dplus1;
+        *a = 0;
+    } else if (strcmp(s, "A+1") == 0) {
+        id = COMP_Aplus1;
+        *a = 0;
+    } else if (strcmp(s, "M+1") == 0) {
+        id = COMP_Mplus1;
+        *a = 1;
+    } else if (strcmp(s, "D-1") == 0) {
+        id = COMP_Dminus1;
+        *a = 0;
+    } else if (strcmp(s, "A-1") == 0) {
+        id = COMP_Aminus1;
+        *a = 0;
+    } else if (strcmp(s, "M-1") == 0) {
+        id = COMP_Mminus1;
+        *a = 1;
+    } else if (strcmp(s, "D+A") == 0 || strcmp(s, "A+D") == 0) {
+        id = COMP_DplusA;
+        *a = 0;
+    } else if (strcmp(s, "D+M") == 0 || strcmp(s, "M+D") == 0) {
+        id = COMP_DplusM;
+        *a = 1;
+    } else if (strcmp(s, "D-A") == 0) {
+        id = COMP_DminusA;
+        *a = 0;
+    } else if (strcmp(s, "D-M") == 0) {
+        id = COMP_DminusM;
+        *a = 1;
+    } else if (strcmp(s, "A-D") == 0) {
+        id = COMP_AminusD;
+        *a = 0;
+    } else if (strcmp(s, "M-D") == 0) {
+        id = COMP_MminusD;
+        *a = 1;
+    } else if (strcmp(s, "D&A") == 0 || strcmp(s, "A&D") == 0) {
+        id = COMP_DandA;
+        *a = 0;
+    } else if (strcmp(s, "D&M") == 0 || strcmp(s, "M&D") == 0) {
+        id = COMP_DandM;
+        *a = 1;
+    } else if (strcmp(s, "D|A")  == 0 || strcmp(s, "A|D") == 0) {
+        id = COMP_DorA;
+        *a = 0;
+    } else if (strcmp(s, "D|M") == 0 || strcmp(s, "M|D") == 0) {
+        id = COMP_DorM;
+        *a = 1;
+    }
+    return id;
 }
 
 #endif

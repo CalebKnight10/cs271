@@ -1,6 +1,6 @@
+#include "parser.h"
 #include "error.h"
 #include "symtable.h"
-#include "parser.h"
 #include "hack.h"
 
 #define MAX_INSTRUCTION_COUNT 30000
