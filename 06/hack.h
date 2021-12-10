@@ -6,6 +6,25 @@
 
 #define NUM_PREDEFINED_SYMBOLS 23
 
+#define OPCODE_TO_BINARY(opcode) \
+  (opcode & 0x8000 ? '1' : '0'), \
+  (opcode & 0x4000 ? '1' : '0'), \
+  (opcode & 0x2000 ? '1' : '0'), \
+  (opcode & 0x1000 ? '1' : '0'), \
+  (opcode & 0x800 ? '1' : '0'), \
+  (opcode & 0x400 ? '1' : '0'), \
+  (opcode & 0x200 ? '1' : '0'), \
+  (opcode & 0x100 ? '1' : '0'), \
+  (opcode & 0x80 ? '1' : '0'), \
+  (opcode & 0x40 ? '1' : '0'), \
+  (opcode & 0x20 ? '1' : '0'), \
+  (opcode & 0x10 ? '1' : '0'), \
+  (opcode & 0x8 ? '1' : '0'), \
+  (opcode & 0x4 ? '1' : '0'), \
+  (opcode & 0x2 ? '1' : '0'), \
+  (opcode & 0x1 ? '1' : '0') \
+
+
 typedef enum symbol_id {
 	SYM_R0 = 0,
 	SYM_R1 = 1,
@@ -149,7 +168,7 @@ static inline dest_id str_to_destid(const char *s) {
 		id = DEST_M;
 	} else if (!strcmp(s, "D")) {
 		id = DEST_D;
-	} else if (!strcmp(s, "MD")) {
+	} else if (!strcmp(s, "MD") || !strcmp(s, "DM")) {
 		id = DEST_MD;
 	} else if (!strcmp(s, "A")) {
 		id = DEST_A;
@@ -157,7 +176,7 @@ static inline dest_id str_to_destid(const char *s) {
 		id = DEST_AM;
 	} else if (!strcmp(s, "AD")) {
 		id = DEST_AD;
-	} else if (!strcmp(s, "AMD")) {
+	} else if (!strcmp(s, "AMD") || !strcmp(s, "ADM")) {
 		id = DEST_AMD;
 	}
 	return id;
@@ -228,6 +247,5 @@ static inline comp_id str_to_compid(const char *s, int *a) {
 	}
 	return id;
 }
-
 
 #endif
