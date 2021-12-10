@@ -1,11 +1,8 @@
 #ifndef __HACK_H__
 #define __HACK_H__
 
-#include "parser.h"
-#include "error.h"
-#include "symtable.h"
-#include <stdint.h>
-#include <stdlib.h>
+#include <inttypes.h>
+#include <stddef.h>
 #include <string.h>
 
 #define NUM_PREDEFINED_SYMBOLS 23

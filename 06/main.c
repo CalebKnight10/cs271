@@ -9,7 +9,6 @@
 int main(int argc, const char *argv[]) {
   instruction *instructions = malloc(MAX_INSTRUCTION_COUNT * sizeof(instruction));
 
-
   if (argc != 2) {
     //incorrect number of arguments
     exit_program(EXIT_INCORRECT_ARGUMENTS, argv[0]);
@@ -23,9 +22,6 @@ int main(int argc, const char *argv[]) {
   int num_instructions = parse(file, instructions);
 
   fclose(file);
-
   assemble(argv[1], instructions, num_instructions);
-
-  return 0;
   free(instructions);
 }
