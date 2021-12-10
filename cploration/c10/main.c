@@ -1,14 +1,12 @@
+#include "parser.h"
 #include "error.h"
 #include "symtable.h"
-#include "parser.h"
 #include "hack.h"
 
 #define MAX_INSTRUCTION_COUNT 30000
 
 
 int main(int argc, const char *argv[]) {
-  instruction *instructions = malloc(MAX_INSTRUCTION_COUNT * sizeof(instruction));
-
 
   if (argc != 2) {
     //incorrect number of arguments
@@ -19,11 +17,12 @@ int main(int argc, const char *argv[]) {
   if (file == NULL) {
     exit_program(EXIT_CANNOT_OPEN_FILE, argv[1]);
   } 
+  
+  instruction *instructions = malloc(MAX_INSTRUCTION_COUNT * sizeof(instruction));
 
   int num_instructions = parse(file, instructions);
 
   fclose(file);
 
-  return 0;
   free(instructions);
 }

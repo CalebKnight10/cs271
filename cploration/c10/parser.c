@@ -1,7 +1,4 @@
 #include "parser.h"
-#include "error.h"
-#include "symtable.h"
-#include "hack.h"
 
 int parse(FILE * file, instruction *instructions) {
 	char line[MAX_LINE_LENGTH] = "";
@@ -10,59 +7,58 @@ int parse(FILE * file, instruction *instructions) {
 	unsigned int line_num = 0;
 	unsigned int instr_num = 0;
 
-	 add_predefined_symbols();
-	 symtable_display_table();
+	add_predefined_symbols();
+	symtable_display_table();
 
 	while (fgets(line, sizeof(line), file)) {
-		++line_num;
-		if(instr_num > MAX_INSTRUCTION){ 
+		line_num ++;
+		if(instr_num > MAX_INSTRUCTION) { 
 			exit_program(EXIT_TOO_MANY_INSTRUCTIONS, MAX_INSTRUCTION + 1);
 		}
 		strip(line);
 		if (!*line) {
 			continue;
 		} 
-		char instr_type = '\0';
+		char inst_type = '\0';
 		if(is_Atype(line)) {
-			if (!parse_A_instruction(line, &instr.a_instr)){
+			if (!parse_A_instruction(line, &instr.A_or_C.a_instr)){
 				exit_program(EXIT_INVALID_A_INSTRUCTION, line_num, line);
 			}
-			instr.instr_type = A_instr;
-			instr_type = 'A';
+			instr.in_type = A_instr;
+			inst_type = 'A';
 		} 
-		else if(is_label(line)) {
-			instr_type = 'L';
+		if(is_label(line)) {
+			inst_type = 'L';
 			char label[MAX_LABEL_LENGTH] = {0};
-
-			if(!isalpha(line[0])) {
+			strcpy(line, extract_label(line, label));
+			if(!(isalpha(label[0]))) {
 				exit_program(EXIT_INVALID_LABEL, line_num, line);
 			}
-			if(symtable_find(line) == NULL) {
+			if(symtable_find(label) != NULL) {
 				exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_num, line);
-			} else{
-				symtable_insert(line, instr_num);
-			}
+			} 
+			symtable_insert(label, instr_num);
 			continue;
-			strcpy(line, extract_label(line, label));
+			
 		}
-		else if (is_Ctype(line)) {
-			instr_type = 'C';
+		if (is_Ctype(line)) {
+			inst_type = 'C';
 			char temp_line[MAX_LINE_LENGTH];
 			strcpy(temp_line, line);
-			parse_C_instruction(temp_line, &instr.c_instr);
-			if (instr.c_instr.dest == -1) {
+			parse_C_instruction(temp_line, &instr.A_or_C.c_instr);
+			if (instr.A_or_C.c_instr.dest == DEST_INVALID) {
 				exit_program(EXIT_INVALID_C_DEST, line_num, line);
 			}
-			if (instr.c_instr.comp == -1) {
+			else if (instr.A_or_C.c_instr.comp == COMP_INVALID) {
 				exit_program(EXIT_INVALID_C_COMP, line_num, line); 
-				
 			}
-			if (instr.c_instr.jump == -1) {
+			else if (instr.A_or_C.c_instr.jump == JMP_INVALID) {
 				exit_program(EXIT_INVALID_C_JUMP, line_num, line);
 			}
+			instr.in_type = C_instr;
 
 		}
-		printf("%c  %s\n", instr_type, line);
+		printf("%c  %s\n", inst_type, line);
 		instructions[instr_num++] = instr;
 	}
 	return instr_num;
@@ -107,7 +103,11 @@ bool is_label(const char *line) {
 }
 
 bool is_Ctype(const char *line) {
-	return !is_label(line) && !is_Atype(line);
+	if (!is_label(line) && !is_Atype(line)){
+		return true;
+	} else {
+		return false;
+	}
 }
 
 void add_predefined_symbols() {
@@ -119,42 +119,41 @@ void add_predefined_symbols() {
 }
 
 bool parse_A_instruction(const char *line, a_instruction *instr) {
-	char *s = malloc(strlen(line));
-	strcpy(s, line+1);
-	char *s_end = NULL;
+	char* s = (char*) malloc(strlen(line));
+	strcpy(s, line + 1);
+	char* s_end = NULL;
 	long result = strtol(s, &s_end, 10); //string to long in base 10
 	if(s == s_end) {
-		instr->label = malloc(strlen(line));
-		strcpy(instr->label, s);
+		instr->inst_type.label = (char*) malloc(strlen(line));
+		strcpy(instr->inst_type.label, s);
 		instr->is_addr = false;
 	}
 	else if(*s_end != 0) {
 		return false;
 	}
 	else {
-		instr->addy = result;
+		instr->inst_type.addy = result;
 		instr->is_addr = true;
 	}
 	return true;
 }
 
 void parse_C_instruction(char *line, c_instruction *instr) {
-	char *temp;
 	int a;
-	char *jump;
-	char *dest;
-	char *comp;
-	temp = strtok(line, ";");
-	jump = strtok(NULL, " ");
-	dest = strtok(temp, "=");
-	comp = strtok(NULL, "=");
+	char* temp = strtok(line, ";");
+	char* jump = strtok(NULL, ";");
+	char* dest = strtok(temp, "=");
+	char* comp = strtok(NULL, "=");
 	if (comp == NULL) {
 		comp = dest;
 		dest = NULL;
 	}
+	// printf("%s\n", dest);
+	// printf("%s\n", jump);
+	// printf("%s\n", comp);
+
 	instr->comp = str_to_compid(comp, &a);
 	instr->dest = str_to_destid(dest);
 	instr->jump = str_to_jumpid(jump);
-	instr->a = a == 0 ? 0 : 1;
-
+	instr->a = (a == 0 ? 0 : 1);
 }
